@@ -1,16 +1,19 @@
+from contextlib import nullcontext
+
 import pytest
 
 from src.string_unils import StringUtils
-from contextlib import nullcontext
+
 
 class TestStringUtils:
     @pytest.mark.parametrize(
-        "input_str, expected",
+        "input_str",
+        "expected",
         [
             ("abc", "cba"),
             ("", ""),
             ("123", "321"),
-        ]
+        ],
     )
     def test_reverse_string(self, input_str, expected):
         utils = StringUtils()
@@ -30,19 +33,18 @@ class TestStringUtils:
             with expected:
                 utils.reverse_string(input_str)
 
-
         @pytest.mark.parametrize(
-         "full_name, expected",
+            ("full_name", "expected"),
             [
                 ("Daniil Nikolaev", "DN"),
                 ("Ivan ivanov", "II"),
                 ("", pytest.raises(ValueError)),
-            ]
-         )
+            ],
+        )
         def test_get_initial_string(self, full_name, expected):
             utils = StringUtils()
             if isinstance(expected, str):
-               assert utils.get_initials(full_name) == expected
+                assert utils.get_initials(full_name) == expected
             else:
                 with expected:
                     utils.get_initials(full_name)

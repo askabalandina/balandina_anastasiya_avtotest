@@ -1,4 +1,4 @@
-from conftest import valid_booking_payload
+# from conftest import valid_booking_payload
 from models.booking import CreateBookingResponse
 from src.constant import BookingData
 
@@ -11,27 +11,29 @@ def test_create_booking(created_booking):
 
     assert parsed.booking.bookingdates.checkin == "2026-01-01"
 
-    assert created_booking['booking']['firstname'] == BookingData.FIRSTNAME.value, (
+    assert created_booking["booking"]["firstname"] == BookingData.FIRSTNAME.value, (
         "Вернулось некорректное имя\n"
         f"Response:\n{created_booking}\n"
         f"Ожидаемое имя: {BookingData.FIRSTNAME.value}\n"
     )
-    assert created_booking['booking']['lastname'] == BookingData.LASTNAME.value,(
-         "Вернулось некорректная фамилия\n"
-         f"Response:\n{created_booking}\n"
-         f"Ожидаемое имя: {BookingData.LASTNAME.value}\n"
+    assert created_booking["booking"]["lastname"] == BookingData.LASTNAME.value, (
+        "Вернулось некорректная фамилия\n"
+        f"Response:\n{created_booking}\n"
+        f"Ожидаемое имя: {BookingData.LASTNAME.value}\n"
     )
 
     print()
     print(created_booking)
 
-def test_update_booking(booking_client, created_booking, auth_token, headers, valid_booking_payload):
-    booking_id = created_booking['bookingid']
+
+def test_update_booking(
+    booking_client, created_booking, auth_token, headers, valid_booking_payload
+):
+    booking_id = created_booking["bookingid"]
     headers.update({"Cookie": f"token={auth_token}"})
     payload = valid_booking_payload.build()
     payload.update({"firstname": BookingData.UPDATE_FIRSTNAME.value})
-    update_response = booking_client.update_booking(booking_id, headers,payload)
-    assert update_response.json()['firstname'] == BookingData.UPDATE_FIRSTNAME.value
+    update_response = booking_client.update_booking(booking_id, headers, payload)
+    assert update_response.json()["firstname"] == BookingData.UPDATE_FIRSTNAME.value
     # print()
     # print(update_response.json())
-
